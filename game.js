@@ -179,17 +179,17 @@ class LevelParser {
   }
 
   createActors(plan) { 
-    return plan.reduce((currentMax, itemY, y) => {
+    return plan.reduce((movingObj, itemY, y) => {
       itemY.split('').forEach((itemX, x) => {
         const constructor = this.actorFromSymbol(itemX);
         if (typeof constructor === 'function') {
           const actor = new constructor(new Vector(x, y));
           if (actor instanceof Actor) {
-            currentMax.push(actor);
+            movingObj.push(actor);
           }
         }
       });
-      return currentMax;
+      return movingObj;
     },[]);
   }
 
