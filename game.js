@@ -17,9 +17,9 @@ class Vector {
   }
 
   times(factor) {
-    const addX = this.x * factor;
-    const addY = this.y * factor;
-    return new Vector(addX, addY); 
+    const multiplyX = this.x * factor;
+    const multiplyY = this.y * factor;
+    return new Vector(multiplyX, multiplyY); 
   }
 }
 
@@ -79,8 +79,8 @@ class Level {
     this.actors = actors.slice();
     this.grid = grid.slice();  
     this.height = this.grid.length; 
-    this.width = this.grid.reduce((accumulator, currentValue) => {
-      return Math.max(accumulator, currentValue.length)     
+    this.width = this.grid.reduce((currentMax, row) => {
+      return Math.max(currentMax, row.length)     
     }, 0);
     this.status = null; 
     this.finishDelay = 1; 
@@ -179,17 +179,17 @@ class LevelParser {
   }
 
   createActors(plan) { 
-    return plan.reduce((accumulator, itemY, y) => {
+    return plan.reduce((currentMax, itemY, y) => {
       itemY.split('').forEach((itemX, x) => {
         const constructor = this.actorFromSymbol(itemX);
         if (typeof constructor === 'function') {
           const actor = new constructor(new Vector(x, y));
           if (actor instanceof Actor) {
-            accumulator.push(actor);
+            currentMax.push(actor);
           }
         }
       });
-      return accumulator;
+      return currentMax;
     },[]);
   }
 
